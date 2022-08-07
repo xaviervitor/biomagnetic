@@ -16,3 +16,19 @@ As it is, the "First Person Character Controller" made by Unity rotates the Play
 With that, I now have a character controller, a basic "greybox" level and a pickup/throw interaction.
 
 ---
+
+## Second commit - Object distance controls, ground indicator, held object follow with Force, preservation of momentum and crosshair
+My first idea for improvement of the player controls was to give the player control of the distance between the camera and the held object, to give more control of where the player can move a magnetic object. Thinking of that, I made the ground indicator, an object that follows the held object and raycasts below it to indicate where the nearest ground the object would fall if it is dropped.
+
+After that, I implemented the distance controls, and wanted to make the held object be more dynamic and react to the physics in a more realistic way. To do that, I had to solve a problem that I avoided in the last commit. Previously, I was just parenting the held object to the player camera rotation object, meaning that the object didn't use any Force to move to its target position, which in turn means that when the object is released, there aren't any forces applied to its rigidbody.
+
+My idea was to calculate the direction vector that would lead to the target position and move the object along that vector every FixedUpdate, using a force based in the current distance from the target position. This implementation only worked after I changed the Drag property of every held object to 20, in the ```HeldObject.Pickup()```, and made the gameplay finally work the way I intended, now the velocity of the object is preserved when the player releases it.
+
+I had to learn how rigidbodies behave and the nuances of FixedUpdate, Update and LateUpdate to achieve the smooth movement of the held object following the player, as well as the Ground Indicator following the held object.
+
+- Added a Crosshair to the center of the HUD and the UpdateCrosshairColor script, which checks if the PlayerInteract script flagged a object in range for the player to pickup and updates the color of the crosshair accordingly;
+- Cleaned up code of the held object, which now lives in the HeldObject class, and the PlayerInteract script now only holds a HoldObject instance when a object is picked up, simplifying the script;
+- Downloaded a new shader, "GhostlyHand", from the asset store, which is being used to render the new Held Object Ground Indicator;
+- Moved the StarterAssets folder to the Thirdparty folder to be organized in the same folder as the other tools from the asset store.
+
+---
