@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4226324243058133668}
   - component: {fileID: 810498654408881878}
   - component: {fileID: 897359439814557056}
-  m_Layer: 2
+  m_Layer: 8
   m_Name: GroundIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
