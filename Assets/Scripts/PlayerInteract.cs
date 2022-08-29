@@ -91,6 +91,7 @@ namespace StarterAssets {
 				
 				float raycastDistance = Vector3.Distance(heldObject.gameObject.transform.position, targetPosition);
 				Vector3 raycastDirection = targetPosition - heldObject.gameObject.transform.position;
+				// Wall raycast
 				RaycastHit hit;
 				if (Physics.Raycast(heldObject.gameObject.transform.position, raycastDirection.normalized, out hit, raycastDistance, ~(1 << layerBrokenGlass))) {
 					heldObject.playerToObjectDistance = Vector3.Distance(PlayerCameraRotation.transform.position, hit.point);
@@ -104,8 +105,9 @@ namespace StarterAssets {
 		}
 
 		private GameObject RaycastObjectInRange() {
-			RaycastHit hit;
 			GameObject hitGameObject;
+			// Interact raycast
+			RaycastHit hit;
 			Ray ray = new Ray(PlayerCameraRotation.transform.position, PlayerCameraRotation.transform.forward);
 			if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~(1 << layerGlass | 1 << layerBrokenGlass))) {
 				hitGameObject = hit.transform.gameObject;

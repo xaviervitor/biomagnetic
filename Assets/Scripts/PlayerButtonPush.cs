@@ -10,10 +10,9 @@ public class PlayerButtonPush : MonoBehaviour {
 		// Push only objects directly below the player
 		if (hit.moveDirection.y >= 0f) return;
 		// Push only objects in the Pushable layer
-		Rigidbody rigidbody = hit.collider.attachedRigidbody;
 		int rigidbodyLayerMask = 1 << hit.gameObject.layer;
 		if ((rigidbodyLayerMask & PushableLayer.value) == 0) return;
         // Add force down
-		rigidbody.AddForce(-Vector3.up * PushForce, ForceMode.Force);
+		hit.collider.attachedRigidbody.AddForce(-Vector3.up * PushForce, ForceMode.Force);
 	}
 }
