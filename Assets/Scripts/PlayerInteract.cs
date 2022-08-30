@@ -24,6 +24,7 @@ namespace StarterAssets {
 		private bool isLeftMouseDown = false;
 		private bool isRightMouseDown = false;
 		private HeldObject heldObject = null;
+		private float MagneticObjectMinDistance = 1.75f;
 		private int layerPickable;
 		private int layerMagnetic;
 		private int layerHeld;
@@ -74,11 +75,18 @@ namespace StarterAssets {
 		}
 
 		private void PushOrPullObject() {
-			if (heldObject != null && heldObject.originalLayer == layerMagnetic) {
-				if (input.changeHeldObjectDistance > 0) {
-					heldObject.playerToObjectDistance += 0.25f;
-				} else if (input.changeHeldObjectDistance < 0) {
-					heldObject.playerToObjectDistance -= 0.25f;
+			if (heldObject != null) {
+				if (heldObject.originalLayer == layerMagnetic) {
+					if (input.changeHeldObjectDistance > 0) {
+						heldObject.playerToObjectDistance += 0.25f;
+					} else if (input.changeHeldObjectDistance < 0) {
+						heldObject.playerToObjectDistance -= 0.25f;
+					}
+					if (heldObject.playerToObjectDistance < MagneticObjectMinDistance) {
+						heldObject.playerToObjectDistance = MagneticObjectMinDistance;
+					}
+				} else if (heldObject.originalLayer == layerPickable) {
+					heldObject.playerToObjectDistance = heldObject.initialPlayerToObjectDistance;
 				}
 			}
 		}

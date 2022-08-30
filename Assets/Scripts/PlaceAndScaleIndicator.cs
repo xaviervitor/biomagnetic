@@ -9,6 +9,7 @@ public class PlaceAndScaleIndicator : MonoBehaviour
     public GameObject followGameObject { get ; set; }
     private Vector3 groundPosition;
     private Vector3 currentScale;
+    private Vector3 indicatorUpOffset = new Vector3(0, 0.1f, 0);
 
     private RaycastHit hit;
     private RaycastHit backHit;
@@ -33,7 +34,7 @@ public class PlaceAndScaleIndicator : MonoBehaviour
             followGameObject.transform.position.z);
         // Raycasts up from the found ground position in the up direction
         // to calculate the Y scale of the ground indicator.  
-        Physics.Raycast(raycastHitPosition, transform.up, out backHit, HeldLayer);
+        Physics.Raycast(raycastHitPosition - indicatorUpOffset, transform.up, out backHit, HeldLayer);
     }
 
     void LateUpdate() {
@@ -44,7 +45,7 @@ public class PlaceAndScaleIndicator : MonoBehaviour
         groundPosition.y = hit.point.y;
         groundPosition.z = followGameObject.transform.position.z;
         transform.position = groundPosition;
-        currentScale.y = Mathf.Max(0.1f, backHit.distance);
+        currentScale.y = backHit.distance;
         transform.localScale = currentScale;
     }
 }

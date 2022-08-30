@@ -7,6 +7,7 @@ public class HeldObject {
     public MeshRenderer meshRenderer { get; set; }
     public Material originalMaterial { get; set; }
     public int originalLayer { get; set; }
+    public float initialPlayerToObjectDistance { get; set; }
     public float playerToObjectDistance { get; set; }
     public Quaternion originalRotation { get; set; }
     public GameObject groundIndicator { get; set; }
@@ -51,8 +52,9 @@ public class HeldObject {
         float averageSize = (objMesh.bounds.size.x + objMesh.bounds.size.y + objMesh.bounds.size.z) / 3;
         // Object distance is 2^x + c where x is the x, y and z average
         // bounds of the object and c is just a constant.
-        float distance = Mathf.Pow(2, averageSize) + 0.5f;
-		playerToObjectDistance = distance;
+        float distance = Mathf.Pow(2, averageSize);
+        playerToObjectDistance = distance;
+		initialPlayerToObjectDistance = distance;
     }
 
     public void Release() {
