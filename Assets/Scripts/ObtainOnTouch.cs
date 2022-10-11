@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ObtainOnTouch : MonoBehaviour {
 
+    public GameObject magneticTutorialTrigger;
+
     private Light pointLight;
     private Renderer meshRenderer;
     private Rigidbody parentRigidbody;
@@ -20,6 +22,7 @@ public class ObtainOnTouch : MonoBehaviour {
         if (c.gameObject.tag == "Player") {
             PlayerProgression.hasMagneticBracelet = true;
             meshRenderer.enabled = false;
+            magneticTutorialTrigger.SetActive(true);
             StartCoroutine(FadeLight());
             StartCoroutine(MoveAltarDown());
         }

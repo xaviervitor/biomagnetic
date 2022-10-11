@@ -7,6 +7,7 @@ public class HeldObject {
     public MeshRenderer meshRenderer { get; set; }
     public Material originalMaterial { get; set; }
     public int originalLayer { get; set; }
+    public bool originalGravity { get; set; }
     public float initialPlayerToObjectDistance { get; set; }
     public float playerToObjectDistance { get; set; }
     public Quaternion originalRotation { get; set; }
@@ -21,20 +22,13 @@ public class HeldObject {
         meshRenderer = gameObject.GetComponent<MeshRenderer>();
         originalLayer = gameObject.layer;
         originalDrag = rigidbody.drag;
+        originalGravity = rigidbody.useGravity;
         groundIndicator = groundIndicatorInstance;
         groundIndicator.GetComponent<PlaceAndScaleIndicator>().followGameObject = gameObject;
         rigidbody.useGravity = false;
         rigidbody.drag = 20;
         originalRotation = gameObject.transform.localRotation;
-        // Change material to transparent
-        originalMaterial = meshRenderer.material;
-        Color color = meshRenderer.material.color;
-        color.a = 0.5f;
-        meshRenderer.material = heldMaterial;
-        meshRenderer.material.CopyPropertiesFromMaterial(originalMaterial);
-        ChangeRenderingModeToFade(meshRenderer.material);
-        meshRenderer.material.SetColor("_Color", color);
-
+        CopyMaterialProperties(heldMaterial);
         // Changes the physics layer of the object to not let the player 
         // consider it as ground while the object is being held
         gameObject.layer = layerHeld;
@@ -63,7 +57,7 @@ public class HeldObject {
         gameObject.layer = originalLayer;
         // Changes object alpha back
         meshRenderer.material = originalMaterial;
-        rigidbody.useGravity = true;
+        rigidbody.useGravity = originalGravity;
         rigidbody.drag = originalDrag;
         float dropThreshold = 1.0f;
         if (rigidbody.velocity.magnitude < dropThreshold) {
@@ -77,19 +71,16 @@ public class HeldObject {
         }
     }
 
-    // Thanks to the user "berkhulagu" in the Unity forums.
-    // This function does what the Unity editor does to 
-    // change the material rendering the fade mode when the user
-    // clicks the dropdown. 
-    // https://forum.unity.com/threads/change-rendering-mode-via-script.476437/
-    private void ChangeRenderingModeToFade(Material material) {
-        material.SetOverrideTag("RenderType", "Transparent");
-        material.SetInt("_SrcBlend", (int) UnityEngine.Rendering.BlendMode.SrcAlpha);
-        material.SetInt("_DstBlend", (int) UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        material.SetInt("_ZWrite", 0);
-        material.DisableKeyword("_ALPHATEST_ON");
-        material.EnableKeyword("_ALPHABLEND_ON");
-        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        material.renderQueue = (int) UnityEngine.Rendering.RenderQueue.Transparent;
+    public void CopyMaterialProperties(Material newMaterial) {
+        originalMaterial = meshRenderer.material;
+        Color baseColor = meshRenderer.material.GetColor("_BaseColor");
+        baseColor.a = 0.75f;
+        newMaterial.SetColor("_BaseColor", baseColor);
+        newMaterial.SetTexture("_BaseMap", meshRenderer.material.GetTexture("_BaseMap"));
+        newMaterial.SetTexture("_BumpMap", meshRenderer.material.GetTexture("_BumpMap"));
+        newMaterial.SetFloat("_BumpScale", 1.0f);
+        newMaterial.SetFloat("_Smoothness", meshRenderer.material.GetFloat("_Smoothness"));
+        newMaterial.SetFloat("_Metallic", meshRenderer.material.GetFloat("_Metallic"));
+        meshRenderer.material = newMaterial;
     }
 }

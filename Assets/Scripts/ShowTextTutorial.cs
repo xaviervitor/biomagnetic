@@ -1,24 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
 
-public class ShowTextTutorial : MonoBehaviour
-{
-    public GameObject player;
+public class ShowTextTutorial : MonoBehaviour {
+    public GameObject Player;
+    public GameObject BackgroundImageGameObject;
     public TMP_Text TextObject;
     [TextArea]
     public string Message = "";
     [TextArea]
     public string GamepadMessage = "";
     public float ShowForSeconds = 4;
-    public bool WaitBeforeShowing = false;
-    public float BeforeSeconds = 0;
     private PlayerInput playerInput;
+    private Image backgroundImage;
+
+    private Color showColor = new Color(0f, 0f, 0f, 0.5f); 
+    private Color hideColor = new Color(0f, 0f, 0f, 0f);
     
     void Start() {
-        playerInput = player.GetComponent<PlayerInput>();
+        backgroundImage = BackgroundImageGameObject.GetComponent<Image>();
+        playerInput = Player.GetComponent<PlayerInput>();
         playerInput.controlsChangedEvent.AddListener(OnControlsChanged);
     }
 
@@ -28,8 +32,6 @@ public class ShowTextTutorial : MonoBehaviour
     }
 
     IEnumerator StartText() {
-        if (WaitBeforeShowing) 
-            yield return new WaitForSeconds(BeforeSeconds);
         UpdateText();
         yield return new WaitForSeconds(ShowForSeconds);
         HideText();
@@ -42,11 +44,14 @@ public class ShowTextTutorial : MonoBehaviour
         } else if (playerInput.currentControlScheme == "Gamepad") {
             TextObject.text = GamepadMessage;
         }
+        ShowBackgroundImage(backgroundImage);
     }
 
     private void HideText() {
-        if (IsThisMessageTheCurrentMessage())
+        if (IsThisMessageTheCurrentMessage()) {
             TextObject.text = "";
+            HideBackgroundImage(backgroundImage);
+        }
     }
 
     public void OnControlsChanged(PlayerInput input) {
@@ -57,5 +62,13 @@ public class ShowTextTutorial : MonoBehaviour
 
     private bool IsThisMessageTheCurrentMessage() {
         return TextObject.text == Message || TextObject.text == GamepadMessage;
+    }
+
+    private void ShowBackgroundImage(Image background) {
+        background.color = showColor;
+    }
+
+    private void HideBackgroundImage(Image background) {
+        background.color = hideColor;
     }
 }

@@ -5,11 +5,9 @@ using UnityEngine;
 public class PlaceAndScaleIndicator : MonoBehaviour
 {
     public LayerMask InteractLayers;
-    public LayerMask HeldLayer;
     public GameObject followGameObject { get ; set; }
     private Vector3 groundPosition;
     private Vector3 currentScale;
-    private Vector3 indicatorUpOffset = new Vector3(0, 0.1f, 0);
 
     private RaycastHit hit;
     private RaycastHit backHit;
@@ -28,13 +26,6 @@ public class PlaceAndScaleIndicator : MonoBehaviour
     void FixedUpdate() {
         // Raycasts in the down direction to find the nearest ground.
         Physics.Raycast(followGameObject.transform.position, -transform.up, out hit, InteractLayers);
-        Vector3 raycastHitPosition = new Vector3(
-            followGameObject.transform.position.x,
-            hit.point.y,
-            followGameObject.transform.position.z);
-        // Raycasts up from the found ground position in the up direction
-        // to calculate the Y scale of the ground indicator.  
-        Physics.Raycast(raycastHitPosition - indicatorUpOffset, transform.up, out backHit, HeldLayer);
     }
 
     void LateUpdate() {
@@ -45,7 +36,7 @@ public class PlaceAndScaleIndicator : MonoBehaviour
         groundPosition.y = hit.point.y;
         groundPosition.z = followGameObject.transform.position.z;
         transform.position = groundPosition;
-        currentScale.y = backHit.distance;
+        currentScale.y = hit.distance;
         transform.localScale = currentScale;
     }
 }

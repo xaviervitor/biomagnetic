@@ -18,9 +18,9 @@ TagManager:
   - Held
   - Magnetic
   - Glass
-  - BrokenGlass
-  - 
-  - 
+  - IgnoreRaycast
+  - LampSupport
+  - IgnoreReflection
   - 
   - 
   - 
