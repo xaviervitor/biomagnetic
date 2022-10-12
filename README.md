@@ -1,3 +1,12 @@
+# Final Project - "Biomagnetic"
+
+This is my final project for the CS50's
+Introduction to Game Development, a game about using magnetism to pull and hold heavy and far away objects to solve small puzzles. The character controller consists of standard object holding mechanics, inspired by the half-life 2's pickup physics and the gravity gun. At first, the player can only hold small and close objects to get around the level, but once the player gets the Magnetic Bracelet, the core mechanic opens more possibilities. It can be played with Mouse/Keyboard or a Gamepad.
+
+The best way I found for making a detailed documentation was to write about the changes I made to the game as I was committing them. Because of that, the documentation follows a linear path to explain what I made, where I struggled and how I solved these problems. The next section contains this documentation.
+
+Thank you for reviewing and grading all my projects, and many thanks to all the people at Harvard for making this amazing course possible.
+
 # Final Project Development Documentation
 
 ## First commit - Initial player movement, level blocking and pickup/hold/throw interactions
