@@ -7,7 +7,7 @@ The best way I found for making a detailed documentation was to write about the 
 
 Thank you for reviewing and grading all my projects, and many thanks to all the people at Harvard for making this amazing course possible.
 
-# Final Project Development Documentation
+# Final Project Development Log
 
 ## First commit - Initial player movement, level blocking and pickup/hold/throw interactions
 First, included assets "Starter Assets - First Person Character Controller", the new default unity character controller, to get the basis of a basic first person character controller and "Gridbox Prototype Materials", just for prototyping the level in distinct material colors.
